@@ -1,0 +1,22 @@
+type: object
+required:
+  - name
+  - category
+  - sex
+properties:
+  name:
+    type: string
+  category:
+    type: integer
+    format: int32
+    enum:
+      - 1
+      - 2
+      - 3
+  sex:
+    type: string
+    enum:
+      - male
+      - female
+  note:
+    type: string

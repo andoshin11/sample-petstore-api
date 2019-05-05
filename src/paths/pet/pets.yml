@@ -1,0 +1,95 @@
+get:
+  summary: Get all pets
+  operationId: GetPets
+  tags:
+    - Pet
+  parameters:
+    - in: query
+      name: per_page
+      schema:
+        type: integer
+        format: int32
+        example: 10
+        default: 10
+      description: Num of pets to show per page
+    - in: query
+      name: page
+      schema:
+        type: integer
+        format: int32
+        example: 1
+        default: 1
+      description: Num of page
+    - in: query
+      name: order_by
+      schema:
+        type: string
+        example: id
+        default: id
+      description: Property to sort by
+    - in: query
+      name: order
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        example: asc
+        default: desc
+      description: Sort order
+  responses:
+    '200':
+      description: A paged array of pets
+      content:
+        application/json:    
+          schema:
+            type: object
+            required:
+              - pets
+              - total
+              - per_page
+              - page
+            properties:
+              total:
+                type: integer
+                format: int32
+                example: 3673
+              per_page:
+                type: integer
+                format: int32
+                example: 5
+              page:
+                type: integer
+                format: int32
+                example: 1
+              pets:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pet"
+post:
+  summary: Create a pet
+  operationId: CreatePet
+  tags:
+    - Pet
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - pet
+          properties:
+            pet:
+              $ref: "#/components/schemas/PetSeed"
+  responses:
+    '201':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - pet
+            properties:
+              pet:
+                $ref: "#/components/schemas/Pet"

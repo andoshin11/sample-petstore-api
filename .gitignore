@@ -1,0 +1,5 @@
+node_modules
+types
+/.idea
+dist/swagger.yml
+.DS_Store

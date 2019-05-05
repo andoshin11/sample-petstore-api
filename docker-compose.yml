@@ -1,0 +1,18 @@
+version: '3'
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - 3020:8080
+    volumes:
+      - ./dist/swagger.yml:/usr/share/nginx/html/swagger.yml
+    environment:
+      API_URL: ./swagger.yml
+    depends_on:
+      - swagpack
+  swagpack:
+    build: ./src
+    volumes:
+      - ./src:/app/src
+      - ./dist/swagger.yml:/app/dist/swagger.yml
+    working_dir: /app

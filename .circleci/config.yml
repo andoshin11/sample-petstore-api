@@ -1,0 +1,65 @@
+version: 2
+
+defaults: &defaults
+  working_directory: /repo
+  docker:
+    - image: node:10.15.1
+
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Lint
+          command: yarn run lint
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run:
+          name: Authenticate with registry
+          command: echo 'todo'
+      - run:
+          name: Generate type def
+          command: yarn run typegen
+      - run:
+          name: Publish package
+          command: npm publish
+      - run:
+          name: Notify update
+          command: bash ./notify_slack.sh
+ 
+workflows:
+  version: 2
+  deploy-workflow:
+    jobs:
+      - test
+      - deploy:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
