@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "swagpack build ./src/index.yml -o ./dist/swagger.yml",
-    "typegen": "yarn run build && openapi-ts-gen generate ./dist/swagger.yml --namespace PetStore --dist types",
+    "requestgen": "yarn run build && request-gen generate ./dist/swagger.yml --namespace PetStore --dist requests",
     "lint": "yarn run build && node ./validate.js",
     "prepare": "yarn run build"
   },
@@ -20,10 +20,10 @@
     "access": "public"
   },
   "devDependencies": {
+    "@squelette/request-gen": "^0.2.3",
     "husky": "^1.3.1",
     "js-yaml": "^3.13.1",
     "oas-validator": "^3.3.1",
-    "openapi-ts-gen": "^0.0.19",
     "swagpack": "^0.0.5"
   },
   "dependencies": {}
