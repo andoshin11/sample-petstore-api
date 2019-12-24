@@ -3,3 +3,5 @@ types
 /.idea
 dist/swagger.yml
 .DS_Store
+requests
+lib
